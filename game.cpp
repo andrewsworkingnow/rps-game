@@ -2,8 +2,11 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <string>
 #include "game.h"
 #include "messages.h"
+
+Game::Game() : playerName("Player1"), numGames(defaultGames), playerScore(0), computerScore(0) {}
 
 // Function to return the result of the game
 int Game::getResults(char playerMove, char computerMove)
@@ -67,39 +70,81 @@ char Game::getPlayerMove()
             break;
         }
         else {
-            std::cout << "\t\t\tInvalid Player Move!!! Please Try Again." << std::endl;
+            printingPrompts(MessageType::INVALID_INPUT);
         }
     }
     return playerMove;
 }
+int Game::validateGamesNumberInput(std::string& input)
+{
+	while (true) {
+		std::getline(std::cin, input);
+		if (input.empty()) {
+			return defaultGames; // Default value
+		}
+		try {
+			int numGames = std::stoi(input);
+			if (numGames >= minGames && numGames <= maxGames) {
+				return numGames;
+			}
+			else {
+				printingPrompts(MessageType::INVALID_INPUT);
+				printingPrompts(MessageType::GAMES_NUMBER);
+			}
+		}
+		catch (const std::invalid_argument&) {
+			printingPrompts(MessageType::INVALID_INPUT);
+			printingPrompts(MessageType::GAMES_NUMBER);
+		}
+	}
+}
+void Game::gameSetup()
+{
+    printingPrompts(MessageType::WELCOME);
+    printingPrompts(MessageType::USER_NAME);
+    std::string input;
+	std::getline(std::cin, input);
+    if (!input.empty()) {
+		this->playerName = input;
+    }
+	printingPrompts(MessageType::GAMES_NUMBER);
+    this->numGames = validateGamesNumberInput(input);
 
+}
 // gameplay function
 void Game::run()
 {
-    welcomeMessage();
-    // computer move
-    char computerMove = Game::getComputerMove();
-    // player move
-    char playerMove = Game::getPlayerMove();
+    
+    Game::gameSetup();
+    clearScreen();
 
-    int result = Game::getResults(playerMove, computerMove);
+    while (numGames > 0)
+    {
+        printingPrompts(MessageType::GAME_START);
+        // get moves
+        char computerMove = Game::getComputerMove();
+        char playerMove = Game::getPlayerMove();
 
-    // priting result based on who won the game
-    if (result == 0) {
-        std::cout << "\n\t\t\tGame Draw!\n";
+        int result = Game::getResults(playerMove, computerMove);
+
+        // priting result based on who won the game
+        if (result == 0) {
+            printingPrompts(MessageType::GAME_DRAW);
+			playerScore++;
+			computerScore++;
+        }
+        else if (result == 1) {
+            printingPrompts(MessageType::GAME_WON);
+            playerScore++;
+        }
+        else {
+            printingPrompts(MessageType::GAME_LOST);
+			computerScore++;
+        }
+    
+		printGameResult(playerMove, computerMove);
+        numGames--;
     }
-    else if (result == 1) {
-        std::cout << "\n\t\t\tCongratulations! Player won the "
-            "game!\n";
-    }
-    else {
-        std::cout << "\n\t\t\tOh! Computer won the game!\n";
-    }
-
-    // showing both  moves
-    std::cout << "\t\t\tYour Move: " << playerMove << std::endl;
-    std::cout << "\t\t\tComputer's Move: " << computerMove << std::endl;
-
 }
 
 

@@ -3,7 +3,22 @@
 
 #include <iostream>
 
-void welcomeMessage();
-
+enum class MessageType {
+	WELCOME,
+	GAMES_NUMBER,
+	USER_NAME,
+	INVALID_INPUT,
+	GAME_RESULT,
+	FINAL_SCORE,
+	PRESS_ANY_KEY,
+	GAME_WON,
+	GAME_LOST,
+	GAME_DRAW,
+	GAME_START
+};
+void printingPrompts(MessageType messageType);
+void clearScreen();
+void waitForKey();
+void printGameResult(char playerMove, char computerMove);
 
 #endif // MESSAGES_H
