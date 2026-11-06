@@ -9,7 +9,6 @@ enum class MessageType {
     USER_NAME,
     INVALID_INPUT,
     GAME_RESULT,
-    FINAL_SCORE,
     PRESS_ANY_KEY,
     GAME_WON,
     GAME_LOST,

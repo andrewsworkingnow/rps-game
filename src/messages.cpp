@@ -20,9 +20,6 @@ void printingPrompts(MessageType messageType) {
     case MessageType::GAME_RESULT:
         std::cout << "\t\t\tGame result: ";
         break;
-    case MessageType::FINAL_SCORE:
-        std::cout << "Final score: ";
-        break;
     case MessageType::GAME_WON:
         std::cout << "\t\t\tCongratulations! Player won the game!" << std::endl;
         break;
@@ -41,7 +38,7 @@ void printingPrompts(MessageType messageType) {
     default:
         break;
     }
-};
+}
 
 void clearScreen() {
     std::cout << "\033[2J\033[1;1H"; // ANSI escape code to clear the console screen
@@ -61,5 +58,3 @@ void printGameResult(char playerMove, char computerMove) {
     waitForKey();
     clearScreen();
 }
-/*void gamesSetupMessage() {
-};*/

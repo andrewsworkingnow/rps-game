@@ -4,34 +4,56 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-#include <string>
 
 Game::Game() : playerName("Player1"), numGames(defaultGames), playerScore(0), computerScore(0) {}
 
+// Returns a lowercase copy, so "rOcK" becomes "rock".
+std::string Game::toLower(const std::string &text) {
+    std::string result;
+    for (char c : text) {
+        result += static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+    }
+    return result;
+}
+
+std::optional<Move> Game::parseMove(const std::string &text) {
+    const std::string input = toLower(text);
+    if (input == "r" || input == "rock") {
+        return Move::ROCK;
+    }
+    if (input == "p" || input == "paper") {
+        return Move::PAPER;
+    }
+    if (input == "s" || input == "scissors") {
+        return Move::SCISSORS;
+    }
+    return std::nullopt; // not a move
+}
+
 // Function to return the result of the game
-int Game::getResults(char playerMove, char computerMove) {
+int Game::getResults(Move playerMove, Move computerMove) {
     // condition for draw
     if (playerMove == computerMove) {
         return 0;
     }
 
     // condition for win and loss according to game rule
-    if (playerMove == 's' && computerMove == 'p') {
+    if (playerMove == Move::SCISSORS && computerMove == Move::PAPER) {
         return 1;
     }
-    if (playerMove == 's' && computerMove == 'r') {
+    if (playerMove == Move::SCISSORS && computerMove == Move::ROCK) {
         return -1;
     }
-    if (playerMove == 'p' && computerMove == 'r') {
+    if (playerMove == Move::PAPER && computerMove == Move::ROCK) {
         return 1;
     }
-    if (playerMove == 'p' && computerMove == 's') {
+    if (playerMove == Move::PAPER && computerMove == Move::SCISSORS) {
         return -1;
     }
-    if (playerMove == 'r' && computerMove == 'p') {
-        return -1;
+    if (playerMove == Move::ROCK && computerMove == Move::SCISSORS) {
+        return 1;
     }
-    if (playerMove == 'r' && computerMove == 's') {
+    if (playerMove == Move::ROCK && computerMove == Move::SCISSORS) {
         return 1;
     }
 
@@ -39,7 +61,7 @@ int Game::getResults(char playerMove, char computerMove) {
 }
 
 // get the computer move
-char Game::getComputerMove() {
+Move Game::getComputerMove() {
     int move;
     // generating random number between 0 - 2
     srand(time(NULL));
@@ -47,28 +69,26 @@ char Game::getComputerMove() {
 
     // returning move based on the random number generated
     if (move == 0) {
-        return 'p';
+        return Move::PAPER;
     } else if (move == 1) {
-        return 's';
+        return Move::SCISSORS;
     }
-    return 'r';
+    return Move::ROCK;
 }
 
 // get the player move
-char Game::getPlayerMove() {
-    char playerMove;
-
-    // input from the user
-    while (1) {
-        std::cin >> playerMove;
-        if (playerMove == 'p' || playerMove == 'r' || playerMove == 's') {
-            break;
-        } else {
-            printingPrompts(MessageType::INVALID_INPUT);
+Move Game::getPlayerMove() {
+    std::string line;
+    while (std::getline(std::cin, line)) {
+        const std::optional<Move> move = parseMove(line);
+        if (move) {
+            return *move;
         }
+        printingPrompts(MessageType::INVALID_INPUT);
     }
-    return playerMove;
+    return Move::NA; // input ended (for example Ctrl+Z); fixed properly in a later step
 }
+
 int Game::validateGamesNumberInput(std::string &input) {
     while (true) {
         std::getline(std::cin, input);
@@ -109,9 +129,12 @@ void Game::run() {
     while (numGames > 0) {
         printingPrompts(MessageType::GAME_START);
         // get moves
-        char computerMove = Game::getComputerMove();
-        char playerMove = Game::getPlayerMove();
-
+        Move computerMove = Game::getComputerMove();
+        Move playerMove = Game::getPlayerMove();
+        if (playerMove == Move::NA) {
+            printingPrompts(MessageType::INVALID_INPUT);
+            break; // input ended
+        }
         int result = Game::getResults(playerMove, computerMove);
 
         // priting result based on who won the game

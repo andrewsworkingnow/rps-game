@@ -1,6 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <optional>
+#include <string>
+
+enum Move { ROCK = 'r', PAPER = 'p', SCISSORS = 's', NA = 'n' };
+
 class Game {
   private:
     static constexpr int maxGames = 99;
@@ -15,9 +20,11 @@ class Game {
     Game();
     void gameSetup();
     int validateGamesNumberInput(std::string &input);
-    int getResults(char playerMove, char computerMove);
-    char getComputerMove();
-    char getPlayerMove();
+    int getResults(Move playerMove, Move computerMove);
+    std::string toLower(const std::string &text);
+    std::optional<Move> parseMove(const std::string &text);
+    Move getComputerMove();
+    Move getPlayerMove();
     void run();
 };
 
