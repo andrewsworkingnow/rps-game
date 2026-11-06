@@ -4,17 +4,17 @@
 #include <iostream>
 
 enum class MessageType {
-	WELCOME,
-	GAMES_NUMBER,
-	USER_NAME,
-	INVALID_INPUT,
-	GAME_RESULT,
-	FINAL_SCORE,
-	PRESS_ANY_KEY,
-	GAME_WON,
-	GAME_LOST,
-	GAME_DRAW,
-	GAME_START
+    WELCOME,
+    GAMES_NUMBER,
+    USER_NAME,
+    INVALID_INPUT,
+    GAME_RESULT,
+    FINAL_SCORE,
+    PRESS_ANY_KEY,
+    GAME_WON,
+    GAME_LOST,
+    GAME_DRAW,
+    GAME_START
 };
 void printingPrompts(MessageType messageType);
 void clearScreen();
