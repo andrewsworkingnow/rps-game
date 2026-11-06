@@ -15,9 +15,10 @@ enum class MessageType {
     GAME_DRAW,
     GAME_START
 };
-void printingPrompts(MessageType messageType);
+void printingPrompts(MessageType messageType, const std::string &playerName = "");
 void clearScreen();
 void waitForKey();
-void printGameResult(char playerMove, char computerMove);
+void printRoundResult(char playerMove, char computerMove);
+void printFinalGameResult(int playerScore, int computerScore, const std::string &playerName);
 
 #endif // MESSAGES_H

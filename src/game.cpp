@@ -85,6 +85,7 @@ Move Game::getPlayerMove() {
             return *move;
         }
         printingPrompts(MessageType::INVALID_INPUT);
+        printingPrompts(MessageType::GAME_START);
     }
     return Move::NA; // input ended (for example Ctrl+Z); fixed properly in a later step
 }
@@ -126,19 +127,19 @@ void Game::gameSetup() {
 // gameplay function
 void Game::run() {
 
-    Game::gameSetup();
+    gameSetup();
     clearScreen();
 
     while (numGames > 0) {
         printingPrompts(MessageType::GAME_START);
         // get moves
-        Move computerMove = Game::getComputerMove();
-        Move playerMove = Game::getPlayerMove();
+        Move computerMove = getComputerMove();
+        Move playerMove = getPlayerMove();
         if (playerMove == Move::NA) {
             printingPrompts(MessageType::INVALID_INPUT);
             break; // input ended
         }
-        int result = Game::getResults(playerMove, computerMove);
+        int result = getResults(playerMove, computerMove);
 
         // priting result based on who won the game
         if (result == 0) {
@@ -146,14 +147,15 @@ void Game::run() {
             playerScore++;
             computerScore++;
         } else if (result == 1) {
-            printingPrompts(MessageType::GAME_WON);
+            printingPrompts(MessageType::GAME_WON, playerName);
             playerScore++;
         } else {
             printingPrompts(MessageType::GAME_LOST);
             computerScore++;
         }
 
-        printGameResult(playerMove, computerMove);
+        printRoundResult(playerMove, computerMove);
         numGames--;
     }
+    printFinalGameResult(playerScore, computerScore, playerName);
 }
