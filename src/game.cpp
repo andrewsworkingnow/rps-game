@@ -2,7 +2,8 @@
 #include "game.h"
 #include "messages.h"
 #include <cstdlib>
-#include <ctime>
+#include <cctype>
+#include <stdexcept>
 #include <iostream>
 
 Game::Game() : playerName("Player1"), numGames(defaultGames), playerScore(0), computerScore(0) {}

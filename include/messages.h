@@ -1,7 +1,9 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
 
+#include <game.h>
 #include <iostream>
+#include <string>
 
 enum class MessageType {
     WELCOME,
@@ -18,7 +20,8 @@ enum class MessageType {
 void printingPrompts(MessageType messageType, const std::string &playerName = "");
 void clearScreen();
 void waitForKey();
-void printRoundResult(char playerMove, char computerMove);
+void printRoundResult(Move playerMove, Move computerMove);
 void printFinalGameResult(int playerScore, int computerScore, const std::string &playerName);
+const char *moveName(Move move);
 
 #endif // MESSAGES_H

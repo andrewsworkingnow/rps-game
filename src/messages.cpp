@@ -18,7 +18,7 @@ void printingPrompts(MessageType messageType, const std::string &playerName) {
         std::cout << "Invalid input! Please try again." << std::endl;
         break;
     case MessageType::GAME_RESULT:
-        std::cout << "\t\t\tGame result: ";
+        std::cout << "Game result: ";
         break;
     case MessageType::GAME_WON:
         std::cout << "\t\t\tCongratulations! " << playerName << " won the round!" << std::endl;
@@ -51,17 +51,30 @@ void waitForKey() {
     std::cout << std::endl;
 }
 
-void printRoundResult(char playerMove, char computerMove) {
+// Returns the display name of a move, such as "Rock".
+const char *moveName(Move move) {
+    switch (move) {
+    case Move::ROCK:
+        return "Rock";
+    case Move::PAPER:
+        return "Paper";
+    case Move::SCISSORS:
+        return "Scissors";
+    default:
+        return "Unknown";
+    }
+}
+void printRoundResult(Move playerMove, Move computerMove) {
     printingPrompts(MessageType::GAME_RESULT);
-    std::cout << "\t\t\tYour Move: " << playerMove << std::endl;
-    std::cout << "\t\t\tComputer's Move: " << computerMove << std::endl;
+    std::cout << "Your Move: " << moveName(playerMove);
+    std::cout << "\t\t\tComputer's Move: " << moveName(computerMove) << std::endl;
     waitForKey();
     clearScreen();
 }
 
 void printFinalGameResult(int playerScore, int computerScore, const std::string &playerName) {
     std::cout << "\nFinal Result:\n";
-    std::cout << " " << playerName << "'s Score: " << playerScore << std::endl;
+    std::cout << playerName << "'s Score: " << playerScore << std::endl;
     std::cout << "Computer Score: " << computerScore << std::endl;
     if (playerScore > computerScore) {
         std::cout << "Congratulations! " << playerName << " won the Match!" << std::endl;
