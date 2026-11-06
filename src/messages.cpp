@@ -8,7 +8,7 @@ void printingPrompts(MessageType messageType) {
         std::cout << "Welcome to Rock-Paper-Scissors Game!" << std::endl;
         break;
     case MessageType::GAMES_NUMBER:
-        std::cout << "Enter the number of games you want to play (1-99), Default is 5 press enter "
+        std::cout << "Enter the number of games you want to play, Default is 5 press enter "
                      "to skip: ";
         break;
     case MessageType::USER_NAME:

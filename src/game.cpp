@@ -53,7 +53,7 @@ int Game::getResults(Move playerMove, Move computerMove) {
     if (playerMove == Move::ROCK && computerMove == Move::SCISSORS) {
         return 1;
     }
-    if (playerMove == Move::ROCK && computerMove == Move::SCISSORS) {
+    if (playerMove == Move::ROCK && computerMove == Move::PAPER) {
         return 1;
     }
 
