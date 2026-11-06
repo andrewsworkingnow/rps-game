@@ -91,22 +91,25 @@ Move Game::getPlayerMove() {
 
 int Game::validateGamesNumberInput(std::string &input) {
     while (true) {
-        std::getline(std::cin, input);
+        if (!std::getline(std::cin, input)) {
+            return defaultGames; // input ended, for example Ctrl+Z
+        }
         if (input.empty()) {
-            return defaultGames; // Default value
+            return defaultGames;
         }
+
         try {
-            int numGames = std::stoi(input);
-            if (numGames >= minGames && numGames <= maxGames) {
-                return numGames;
-            } else {
-                printingPrompts(MessageType::INVALID_INPUT);
-                printingPrompts(MessageType::GAMES_NUMBER);
+            std::size_t used = 0; // how many characters stoi read
+            const int count = std::stoi(input, &used);
+            if (used == input.size() && count >= minGames && count <= maxGames) {
+                return count;
             }
-        } catch (const std::invalid_argument &) {
-            printingPrompts(MessageType::INVALID_INPUT);
-            printingPrompts(MessageType::GAMES_NUMBER);
+        } catch (const std::invalid_argument &) { // not a number, like "abc"
+        } catch (const std::out_of_range &) {     // too big, like "99999999999"
         }
+
+        printingPrompts(MessageType::INVALID_INPUT);
+        printingPrompts(MessageType::GAMES_NUMBER);
     }
 }
 void Game::gameSetup() {
