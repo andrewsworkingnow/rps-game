@@ -137,7 +137,6 @@ void Game::run() {
         Move computerMove = getComputerMove();
         Move playerMove = getPlayerMove();
         if (playerMove == Move::NA) {
-            printingPrompts(MessageType::INVALID_INPUT);
             break; // input ended
         }
         int result = getResults(playerMove, computerMove);
