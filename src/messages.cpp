@@ -84,3 +84,8 @@ void printFinalGameResult(int playerScore, int computerScore, const std::string 
         std::cout << "It's a draw!" << std::endl;
     }
 }
+
+void printScore(int playerScore, int computerScore, const std::string &playerName) {
+    std::cout << "\t\t\tScore: " << playerName << " " << playerScore << " - " << computerScore
+              << " Computer" << std::endl;
+}

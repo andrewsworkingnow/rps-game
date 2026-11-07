@@ -154,7 +154,7 @@ void Game::run() {
             printingPrompts(MessageType::GAME_LOST);
             computerScore++;
         }
-
+        printScore(playerScore, computerScore, playerName);
         printRoundResult(playerMove, computerMove);
         numGames--;
     }
