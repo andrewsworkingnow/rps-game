@@ -1,4 +1,5 @@
-#include <gtest/gtest.h>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest.h"
 
 #include <iostream>
 #include <sstream>
@@ -40,78 +41,78 @@ int readGameCount(const std::string &typed) {
 
 // ---- getResults: 1 = player wins, -1 = computer wins, 0 = draw ----
 
-TEST(GetResults, SameMovesAreADraw) {
-    EXPECT_EQ(Game::getResults(ROCK, ROCK), 0);
-    EXPECT_EQ(Game::getResults(PAPER, PAPER), 0);
-    EXPECT_EQ(Game::getResults(SCISSORS, SCISSORS), 0);
+TEST_CASE("getResults: same moves are a draw") {
+    CHECK(Game::getResults(ROCK, ROCK) == 0);
+    CHECK(Game::getResults(PAPER, PAPER) == 0);
+    CHECK(Game::getResults(SCISSORS, SCISSORS) == 0);
 }
 
-TEST(GetResults, PlayerWins) {
-    EXPECT_EQ(Game::getResults(ROCK, SCISSORS), 1);
-    EXPECT_EQ(Game::getResults(PAPER, ROCK), 1);
-    EXPECT_EQ(Game::getResults(SCISSORS, PAPER), 1);
+TEST_CASE("getResults: player wins") {
+    CHECK(Game::getResults(ROCK, SCISSORS) == 1);
+    CHECK(Game::getResults(PAPER, ROCK) == 1);
+    CHECK(Game::getResults(SCISSORS, PAPER) == 1);
 }
 
-TEST(GetResults, ComputerWins) {
-    EXPECT_EQ(Game::getResults(ROCK, PAPER), -1);
-    EXPECT_EQ(Game::getResults(PAPER, SCISSORS), -1);
-    EXPECT_EQ(Game::getResults(SCISSORS, ROCK), -1);
+TEST_CASE("getResults: computer wins") {
+    CHECK(Game::getResults(ROCK, PAPER) == -1);
+    CHECK(Game::getResults(PAPER, SCISSORS) == -1);
+    CHECK(Game::getResults(SCISSORS, ROCK) == -1);
 }
 
 // ---- toLower ----
 
-TEST(ToLower, LowercasesEveryLetter) {
-    EXPECT_EQ(Game::toLower("rOcK"), "rock");
-    EXPECT_EQ(Game::toLower("ABC"), "abc");
-    EXPECT_EQ(Game::toLower(""), "");
+TEST_CASE("toLower: lowercases every letter") {
+    CHECK(Game::toLower("rOcK") == "rock");
+    CHECK(Game::toLower("ABC") == "abc");
+    CHECK(Game::toLower("") == "");
 }
 
 // ---- parseMove ----
 
-TEST(ParseMove, AcceptsLettersAndWordsInAnyCase) {
-    EXPECT_EQ(Game::parseMove("r"), ROCK);
-    EXPECT_EQ(Game::parseMove("R"), ROCK);
-    EXPECT_EQ(Game::parseMove("rock"), ROCK);
-    EXPECT_EQ(Game::parseMove("ROCK"), ROCK);
-    EXPECT_EQ(Game::parseMove("p"), PAPER);
-    EXPECT_EQ(Game::parseMove("Paper"), PAPER);
-    EXPECT_EQ(Game::parseMove("s"), SCISSORS);
-    EXPECT_EQ(Game::parseMove("SciSSors"), SCISSORS);
+TEST_CASE("parseMove: accepts letters and words in any case") {
+    CHECK(Game::parseMove("r") == ROCK);
+    CHECK(Game::parseMove("R") == ROCK);
+    CHECK(Game::parseMove("rock") == ROCK);
+    CHECK(Game::parseMove("ROCK") == ROCK);
+    CHECK(Game::parseMove("p") == PAPER);
+    CHECK(Game::parseMove("Paper") == PAPER);
+    CHECK(Game::parseMove("s") == SCISSORS);
+    CHECK(Game::parseMove("SciSSors") == SCISSORS);
 }
 
-TEST(ParseMove, RejectsAnythingElse) {
-    EXPECT_FALSE(Game::parseMove("").has_value());
-    EXPECT_FALSE(Game::parseMove("x").has_value());
-    EXPECT_FALSE(Game::parseMove("rs").has_value());
-    EXPECT_FALSE(Game::parseMove("rocks").has_value());
-    EXPECT_FALSE(Game::parseMove("n").has_value());
+TEST_CASE("parseMove: rejects anything else") {
+    CHECK_FALSE(Game::parseMove("").has_value());
+    CHECK_FALSE(Game::parseMove("x").has_value());
+    CHECK_FALSE(Game::parseMove("rs").has_value());
+    CHECK_FALSE(Game::parseMove("rocks").has_value());
+    CHECK_FALSE(Game::parseMove("n").has_value());
 }
 
 // ---- validateGamesNumberInput ----
 
-TEST(GameCount, ValidNumbers) {
-    EXPECT_EQ(readGameCount("1\n"), 1);
-    EXPECT_EQ(readGameCount("7\n"), 7);
-    EXPECT_EQ(readGameCount("99\n"), 99);
+TEST_CASE("game count: valid numbers") {
+    CHECK(readGameCount("1\n") == 1);
+    CHECK(readGameCount("7\n") == 7);
+    CHECK(readGameCount("99\n") == 99);
 }
 
-TEST(GameCount, EnterOrEndOfInputGivesDefault) {
-    EXPECT_EQ(readGameCount("\n"), Game::defaultGames);
-    EXPECT_EQ(readGameCount(""), Game::defaultGames);
+TEST_CASE("game count: Enter or end of input gives the default") {
+    CHECK(readGameCount("\n") == Game::defaultGames);
+    CHECK(readGameCount("") == Game::defaultGames);
 }
 
-TEST(GameCount, BadInputIsRejectedThenAskedAgain) {
-    EXPECT_EQ(readGameCount("0\n3\n"), 3);
-    EXPECT_EQ(readGameCount("100\n3\n"), 3);
-    EXPECT_EQ(readGameCount("-1\n3\n"), 3);
-    EXPECT_EQ(readGameCount("abc\n3\n"), 3);
-    EXPECT_EQ(readGameCount("5abc\n3\n"), 3);
-    EXPECT_EQ(readGameCount("99999999999\n3\n"), 3); // used to crash
+TEST_CASE("game count: bad input is rejected, then asked again") {
+    CHECK(readGameCount("0\n3\n") == 3);
+    CHECK(readGameCount("100\n3\n") == 3);
+    CHECK(readGameCount("-1\n3\n") == 3);
+    CHECK(readGameCount("abc\n3\n") == 3);
+    CHECK(readGameCount("5abc\n3\n") == 3);
+    CHECK(readGameCount("99999999999\n3\n") == 3); // used to crash
 }
 
-TEST(GameCount, RejectedInputPrintsInvalidInput) {
+TEST_CASE("game count: rejected input prints Invalid input") {
     FakeConsole console("abc\n3\n");
     std::string buffer;
     Game::validateGamesNumberInput(buffer);
-    EXPECT_NE(console.output().find("Invalid input"), std::string::npos);
+    CHECK(console.output().find("Invalid input") != std::string::npos);
 }

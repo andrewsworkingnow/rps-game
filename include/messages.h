@@ -1,7 +1,7 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
 
-#include <game.h>
+#include "game.h"
 #include <iostream>
 #include <string>
 

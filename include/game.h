@@ -13,10 +13,6 @@ class Game {
     int playerScore;
     int computerScore;
     void gameSetup();
-    int validateGamesNumberInput(std::string &input);
-    int getResults(Move playerMove, Move computerMove);
-    std::string toLower(const std::string &text);
-    std::optional<Move> parseMove(const std::string &text);
     Move getComputerMove();
     Move getPlayerMove();
 
@@ -24,6 +20,10 @@ class Game {
     static constexpr int maxGames = 99;
     static constexpr int minGames = 1;
     static constexpr int defaultGames = 5;
+    static int validateGamesNumberInput(std::string &input);
+    static int getResults(Move playerMove, Move computerMove);
+    static std::string toLower(const std::string &text);
+    static std::optional<Move> parseMove(const std::string &text);
 
     Game();
     void run();

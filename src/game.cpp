@@ -1,8 +1,8 @@
-// C++ Program to Implement Rock-Paper-Scissors
 #include "game.h"
 #include "messages.h"
 #include <cstdlib>
 #include <cctype>
+#include <ctime>
 #include <stdexcept>
 #include <iostream>
 
@@ -55,7 +55,7 @@ int Game::getResults(Move playerMove, Move computerMove) {
         return 1;
     }
     if (playerMove == Move::ROCK && computerMove == Move::PAPER) {
-        return 1;
+        return -1;
     }
 
     return 0;
