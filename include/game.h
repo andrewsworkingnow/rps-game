@@ -17,7 +17,7 @@ class Game {
     Move getPlayerMove();
 
   public:
-    static constexpr int maxGames = 999;
+    static constexpr int maxGames = 99;
     static constexpr int minGames = 1;
     static constexpr int defaultGames = 5;
     static int validateGamesNumberInput(std::string &input);
